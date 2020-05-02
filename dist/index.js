@@ -982,12 +982,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
-const exec_1 = __importDefault(__webpack_require__(986));
+const exec = __importStar(__webpack_require__(986));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -996,12 +993,12 @@ function run() {
             const packages = core.getInput('packages', { required: true });
             // Add architectures if specified
             if (architectures !== undefined) {
-                yield exec_1.default.exec('dpkg', ['add-architecture'].concat(architectures.split(' ')));
+                yield exec.exec('dpkg', ['add-architecture'].concat(architectures.split(' ')));
             }
             // Update apt repository
-            yield exec_1.default.exec('apt-get', ['update']);
+            yield exec.exec('apt-get', ['update']);
             // Install requested packages
-            yield exec_1.default.exec('apt-get', ['install', '-y'].concat(packages.split(' ')));
+            yield exec.exec('apt-get', ['install', '-y'].concat(packages.split(' ')));
         }
         catch (error) {
             core.setFailed(error.message);
