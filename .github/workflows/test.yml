@@ -20,4 +20,5 @@ jobs:
     - uses: actions/checkout@v1
     - uses: ./
       with: 
-        milliseconds: 1000
+        architectures: "armhf"
+        packages: "libsqlite3-dev libsqlite3-dev:armhf"
