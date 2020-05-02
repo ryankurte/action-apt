@@ -6,7 +6,7 @@ APT_PATH=$1
 patch() {
   if grep -q "http://azure" "$1"; then
     echo "Patching apt source: $1"
-    sed -i.bak "s|deb http://azure|deb [arch=amd64] http://azure|g" $1
+    sed -i.bak "s|deb http://azure|deb [arch=amd64] http://azure|g; s|deb http://security|deb [arch=amd64] http://security|g" $1
   fi
 }
 
