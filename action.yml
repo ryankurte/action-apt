@@ -1,10 +1,13 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'APT'
+description: 'Use apt to install packages and architectures'
+author: 'ryan kurte'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  architectures:
+    description: 'architectures to pass to dpkg --add-architecture'
+  packages:
+    description: 'apt packages to install`
+
 runs:
   using: 'node12'
   main: 'dist/index.js'
+

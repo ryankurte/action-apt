@@ -1,16 +1,23 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+const exec = require('@actions/exec')
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    // Fetch incoming variables
+    const architectures = core.getInput('architectures', { required: false });
+    const packages = core.getInput('packages', { required: true});
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    // Add architectures if specified
+    if (architectures !== undefined) {
+      await exec.exec('dpkg', ['add-architecture'].concat(architectures.split(" ")))
+    }
 
-    core.setOutput('time', new Date().toTimeString())
+    // Update apt repository
+    await exec.exec('apt-get', ['update'])
+
+    // Install requested packages
+    await exec.exec('apt-get', ['install', '-y'].concat(packages.split(" ")))
+
   } catch (error) {
     core.setFailed(error.message)
   }
