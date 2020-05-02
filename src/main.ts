@@ -11,7 +11,7 @@ async function run(): Promise<void> {
     if (architectures !== undefined) {
       await exec.exec(
         'dpkg',
-        ['add-architecture'].concat(architectures.split(' '))
+        ['--add-architecture'].concat(architectures.split(' '))
       )
     }
 
