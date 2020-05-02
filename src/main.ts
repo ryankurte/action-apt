@@ -9,6 +9,12 @@ async function run(): Promise<void> {
 
     // Add architectures if specified
     if (architectures !== undefined) {
+      // Patch apt to limit arch for azure repos
+      await exec.exec(
+        'sudo',
+        ['./patch-apt.sh', '/etc/apt/sources.list.d']
+      )
+
       await exec.exec(
         'sudo',
         ['dpkg', '--add-architecture'].concat(architectures.split(' '))
