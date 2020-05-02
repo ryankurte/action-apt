@@ -10,16 +10,19 @@ async function run(): Promise<void> {
     // Add architectures if specified
     if (architectures !== undefined) {
       await exec.exec(
-        'dpkg',
-        ['--add-architecture'].concat(architectures.split(' '))
+        'sudo',
+        ['dpkg', '--add-architecture'].concat(architectures.split(' '))
       )
     }
 
     // Update apt repository
-    await exec.exec('apt-get', ['update'])
+    await exec.exec('sudo', ['apt-get', 'update'])
 
     // Install requested packages
-    await exec.exec('apt-get', ['install', '-y'].concat(packages.split(' ')))
+    await exec.exec(
+      'sudo',
+      ['apt-get', 'install', '-y'].concat(packages.split(' '))
+    )
   } catch (error) {
     core.setFailed(error.message)
   }
