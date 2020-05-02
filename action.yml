@@ -1,13 +1,19 @@
-name: 'APT'
+name: 'apt helper action'
 description: 'Use apt to install packages and architectures'
 author: 'ryan kurte'
 inputs:
   architectures:
     description: 'architectures to pass to dpkg --add-architecture'
+    required: false
   packages:
-    description: 'apt packages to install`
+    description: 'apt packages to install'
+    required: true
 
 runs:
   using: 'node12'
   main: 'dist/index.js'
 
+branding:
+  icon: 'arrow-down-circle'  
+  color: 'blue'
+  
