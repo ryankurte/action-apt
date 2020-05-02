@@ -993,7 +993,7 @@ function run() {
             const packages = core.getInput('packages', { required: true });
             // Add architectures if specified
             if (architectures !== undefined) {
-                yield exec.exec('dpkg', ['add-architecture'].concat(architectures.split(' ')));
+                yield exec.exec('dpkg', ['--add-architecture'].concat(architectures.split(' ')));
             }
             // Update apt repository
             yield exec.exec('apt-get', ['update']);
