@@ -994,7 +994,7 @@ function run() {
             // Add architectures if specified
             if (architectures !== undefined) {
                 // Patch apt to limit arch for azure repos
-                yield exec.exec('sudo', ['./patch-apt.sh', '/etc/apt/sources.list.d']);
+                yield exec.exec('sudo', ['./patch-apt.sh', '/etc/apt/']);
                 yield exec.exec('sudo', ['dpkg', '--add-architecture'].concat(architectures.split(' ')));
             }
             // Update apt repository

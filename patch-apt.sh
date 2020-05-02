@@ -1,14 +1,22 @@
 #!/bin/bash
 
-FILE_PATH=$1
-FILES=$FILE_PATH/*
+APT_PATH=$1
 
+# Patch command tries to patch azure apt sources to specify arch
+patch() {
+  if grep -q "http://azure" "$1"; then
+    echo "Patching apt source: $1"
+    sed -i.bak "s|deb http://azure|deb [arch=amd64] http://azure|g" $1
+  fi
+}
+
+# Update any lines in the base apt config
+patch $APT_PATH/sources.list
+
+# Update any lines in other configs
+FILES=$APT_PATH/sources.list.d/*
 for f in $FILES; do
-  echo "File '$f'"
-
-  sed -i.bak "s|deb http://azure|deb [arch=amd64] http://azure|g" $f
-
+  patch $f
 done
-
 
 
