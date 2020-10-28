@@ -8,7 +8,7 @@ async function run(): Promise<void> {
     const packages = core.getInput('packages', {required: true})
 
     // Add architectures if specified
-    if (architectures !== undefined) {
+    if (architectures !== undefined && architectures !== '') {
       // Patch apt to limit arch for azure repos
       await exec.exec('sudo', ['./patch-apt.sh', '/etc/apt/'])
 
