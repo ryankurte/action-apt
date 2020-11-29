@@ -7,7 +7,7 @@
 Helper action to apt-install packages on the local machine (only for use on `ubuntu-latest` runners)
 
 ```yaml
-  - uses: ryankurte/action-apt@v0.1
+  - uses: ryankurte/action-apt@v0.2.0
     with: 
       packages: "libsqlite3-dev"
 ```
