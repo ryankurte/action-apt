@@ -32,10 +32,11 @@ runs:
         echo "deb [arch=${{ inputs.arch }}] http://ports.ubuntu.com/ubuntu-ports/ ${{ inputs.distro }}-updates main restricted universe" | sudo tee -a /etc/apt/sources.list.d/${{ inputs.arch }}.list
         echo "deb [arch=${{ inputs.arch }}] http://ports.ubuntu.com/ubuntu-ports/ ${{ inputs.distro }}-backports main restricted universe "| sudo tee -a /etc/apt/sources.list.d/${{ inputs.arch }}.list
         echo "deb [arch=${{ inputs.arch }}] http://ports.ubuntu.com/ubuntu-ports/ ${{ inputs.distro }}-security main restricted universe" | sudo tee -a /etc/apt/sources.list.d/${{ inputs.arch }}.list
+        cat /etc/apt/sources.list.d/${{ inputs.arch }}.list
 
     - name: "Update apt"
       shell: bash
-      run: sudo apt update
+      run: sudo apt-get update
 
     - name: "Install packages"
       shell: bash

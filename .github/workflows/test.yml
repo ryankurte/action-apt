@@ -14,4 +14,4 @@ jobs:
     - uses: ./
       with:
         arch: armhf
-        packages: "libsqlite3-dev:armhf"
+        packages: "libsqlite3-dev:armhf libc6-dev:armhf"
