@@ -1,19 +1,53 @@
-name: 'apt helper action'
-description: 'Use apt to install packages and architectures'
+name: 'apt multiarch helper action'
+description: 'Use apt to setup a foreign architecture (multiarch) and install packages on ubuntu'
 author: 'ryan kurte'
 inputs:
-  architectures:
-    description: 'architectures to pass to dpkg --add-architecture'
-    required: false
-  packages:
-    description: 'apt packages to install'
+  arch:
+    description: 'Foreign architecture to configure'
     required: true
+  packages:
+    description: 'List of packages to install'
+    required: true
+outputs:
+  distro: 
+    description: "Detected ubuntu distribution"
+    value: ${{ steps.discover-distro.outputs.distro }}
 
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - name: "Patch azure archives for [amd64, i386] use only"
+      shell: bash
+      run: |
+        sudo sed -i'' -E 's/^(deb|deb-src) http:\/\/(azure.archive|security).ubuntu.com/\1 [arch=amd64,i386] http:\/\/\2.ubuntu.com/' /etc/apt/sources.list
+
+    - name: "Add foreign architecture (${{ inputs.arch }}"
+      shell: bash
+      run: sudo dpkg --add-architecture ${{ inputs.arch }}
+
+    - name: "Discover distro name"
+      id: discover-distro
+      shell: bash
+      run: echo "::set-output name=distro::$(lsb_release -cs)"
+
+    - name: "Add ports.ubuntu.com sources to /etc/apt/sources.list.d/${{ inputs.arch }}.list"
+      shell: bash
+      run: |
+        echo "deb [arch=${{ inputs.arch }}] http://ports.ubuntu.com/ubuntu-ports/ ${{ steps.discover-distro.outputs.distro }} main restricted universe" | sudo tee /etc/apt/sources.list.d/${{ inputs.arch }}.list
+        echo "deb [arch=${{ inputs.arch }}] http://ports.ubuntu.com/ubuntu-ports/ ${{ steps.discover-distro.outputs.distro }}-updates main restricted universe" | sudo tee -a /etc/apt/sources.list.d/${{ inputs.arch }}.list
+        echo "deb [arch=${{ inputs.arch }}] http://ports.ubuntu.com/ubuntu-ports/ ${{ steps.discover-distro.outputs.distro }}-backports main restricted universe "| sudo tee -a /etc/apt/sources.list.d/${{ inputs.arch }}.list
+        echo "deb [arch=${{ inputs.arch }}] http://ports.ubuntu.com/ubuntu-ports/ ${{ steps.discover-distro.outputs.distro }}-security main restricted universe" | sudo tee -a /etc/apt/sources.list.d/${{ inputs.arch }}.list
+        echo "Installed apt sources:"
+        cat /etc/apt/sources.list.d/${{ inputs.arch }}.list
+
+    - name: "Update apt"
+      shell: bash
+      run: sudo apt-get update
+
+    - name: "Install packages"
+      shell: bash
+      run: sudo apt-get install -y ${{ inputs.packages }}
 
 branding:
   icon: 'arrow-down-circle'  
   color: 'blue'
-  
