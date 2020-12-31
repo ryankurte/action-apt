@@ -2,12 +2,17 @@
   <a href="https://github.com/ryankurte/action-apt/actions"><img alt="action-apt status" src="https://github.com/ryankurte/action-apt/workflows/build-test/badge.svg"></a>
 </p>
 
-# APT helper action
+# APT multi-arch helper action
 
-Helper action to apt-install packages on the local machine (only for use on `ubuntu-latest` runners)
+A helper action to setup multiarch and install packages via `dpkg` and `apt-get`, because it's unfortunately complex to setup.
+If you just need to install packages, use a `run: sudo apt-get -y PACKAGES` step instead.
+
+This patches the existing apt repositories on the system, adds the specified architecture via multiarch, adds a set of viable port repositories, and finally updates the cache and installs the specified packages.
+
 
 ```yaml
   - uses: ryankurte/action-apt@v0.1
-    with: 
-      packages: "libsqlite3-dev"
+    with:
+      arch: armhf
+      packages: "libsqlite3-dev:armhf"
 ```
