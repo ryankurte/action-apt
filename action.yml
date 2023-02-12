@@ -28,7 +28,7 @@ runs:
     - name: "Discover distro name"
       id: discover-distro
       shell: bash
-      run: echo "::set-output name=distro::$(lsb_release -cs)"
+      run: echo "distro=$(lsb_release -cs)" >> $GITHUB_OUTPUT
 
     - name: "Add ports.ubuntu.com sources to /etc/apt/sources.list.d/${{ inputs.arch }}.list"
       shell: bash
