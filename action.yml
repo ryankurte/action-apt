@@ -19,7 +19,7 @@ runs:
     - name: "Patch azure archives for [amd64, i386] use only"
       shell: bash
       run: |
-        sudo sed -i'' -E 's/^(deb|deb-src) http:\/\/(azure.archive|security).ubuntu.com/\1 [arch=amd64,i386] http:\/\/\2.ubuntu.com/' /etc/apt/sources.list
+        sudo sed -i'' -E 's/^(deb|deb-src) http:\/\/(archive|azure.archive|security).ubuntu.com/\1 [arch=amd64,i386] http:\/\/\2.ubuntu.com/' /etc/apt/sources.list
 
     - name: "Add foreign architecture (${{ inputs.arch }}"
       shell: bash
