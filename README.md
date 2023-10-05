@@ -11,7 +11,7 @@ This patches the existing apt repositories on the system, adds the specified arc
 
 
 ```yaml
-  - uses: ryankurte/action-apt@v0.3.0
+  - uses: ryankurte/action-apt@v0.4.0
     with:
       arch: armhf
       packages: "libsqlite3-dev:armhf"
