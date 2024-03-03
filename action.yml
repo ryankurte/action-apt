@@ -9,7 +9,7 @@ inputs:
     description: 'List of packages to install'
     required: true
 outputs:
-  distro: 
+  distro:
     description: "Detected ubuntu distribution"
     value: ${{ steps.discover-distro.outputs.distro }}
 
@@ -20,6 +20,7 @@ runs:
       shell: bash
       run: |
         sudo sed -i'' -E 's/^(deb|deb-src) http:\/\/(archive|azure.archive|security).ubuntu.com/\1 [arch=amd64,i386] http:\/\/\2.ubuntu.com/' /etc/apt/sources.list
+        sudo sed -i'' -E 's/^(deb|deb-src) mirror\+file/\1 [arch=amd64,i386] mirror\+file/' /etc/apt/sources.list
 
     - name: "Add foreign architecture (${{ inputs.arch }}"
       shell: bash
@@ -49,5 +50,5 @@ runs:
       run: sudo apt-get install -y ${{ inputs.packages }}
 
 branding:
-  icon: 'arrow-down-circle'  
+  icon: 'arrow-down-circle'
   color: 'blue'
