@@ -21,6 +21,7 @@ runs:
       run: |
         sudo sed -i'' -E 's/^(deb|deb-src) http:\/\/(archive|azure.archive|security).ubuntu.com/\1 [arch=amd64,i386] http:\/\/\2.ubuntu.com/' /etc/apt/sources.list
         sudo sed -i'' -E 's/^(deb|deb-src) mirror\+file/\1 [arch=amd64,i386] mirror\+file/' /etc/apt/sources.list
+        sudo sed -i'' -E 's/Types:\ deb/Types:\ deb\\\nArchitectures:\ amd64\ i386/g' /etc/apt/sources.list.d/ubuntu.sources
 
     - name: "Add foreign architecture (${{ inputs.arch }}"
       shell: bash
