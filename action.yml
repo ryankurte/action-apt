@@ -7,7 +7,7 @@ inputs:
     required: true
   packages:
     description: 'List of packages to install'
-    required: true
+    required: false
 outputs:
   distro:
     description: "Detected ubuntu distribution"
@@ -47,6 +47,7 @@ runs:
       run: sudo apt-get update
 
     - name: "Install packages"
+      if: inputs.packages != ''
       shell: bash
       run: sudo apt-get install -y ${{ inputs.packages }}
 
